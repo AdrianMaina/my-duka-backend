@@ -59,3 +59,4 @@ The M-Pesa API needs to send a confirmation (callback) to your server. Since you
 5.  Create a `users/utils.py` file and implement the `send_invite_email` function to send the actual email.
 
 By Ian Githae.
+By Benard Kimari.
