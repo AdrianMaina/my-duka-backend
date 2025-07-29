@@ -53,7 +53,7 @@ The M-Pesa API needs to send a confirmation (callback) to your server. Since you
 ## ✉️ Email Invite Setup
 
 1.  **Sign up for SendGrid** or a similar email service.
-2.  Get your API key.
+2.  Get your API keys.
 3.  Add `SENDGRID_API_KEY` and `DEFAULT_FROM_EMAIL` to your `.env` file.
 4.  In `myduka/settings.py`, change the `EMAIL_BACKEND` to use the SendGrid backend (see their documentation for specifics).
 5.  Create a `users/utils.py` file and implement the `send_invite_email` function to send the actual email.
