@@ -45,7 +45,7 @@ The M-Pesa API needs to send a confirmation (callback) to your server. Since you
 1.  **Download ngrok:** [https://ngrok.com/download](https://ngrok.com/download)
 2.  **Run ngrok** to expose your Django port (usually 8000):
     `./ngrok http 8000`
-3.  **ngrok will give you a public URL** (e.g., `https://random-string.ngrok.io`). This is your public base URL.
+3.  **ngrok will give you a public URL**yrl (e.g., `https://random-string.ngrok.io`). This is your public base URL.
 4.  **On the Daraja Portal:** When registering your callback URLs, use the ngrok URL. For example:
     * Confirmation URL: `https://random-string.ngrok.io/api/v1/mpesa/confirm/`
     * Validation URL: `https://random-string.ngrok.io/api/v1/mpesa/validate/`
@@ -61,3 +61,5 @@ The M-Pesa API needs to send a confirmation (callback) to your server. Since you
 By Ian Githae.
 By Benard Kimari.
 By Adrian Maina.
+By Emmanuel Ontweka
+By Ignatius Kamau
