@@ -19,7 +19,7 @@ This is the DRF backend for MyDuka, providing a RESTful API for the frontend app
 
 1.  **Clone the repository:**
     `git clone <repository-url> && cd myduka-backend`
-2.  **Create a virtual environment and activate it:**
+2.  **Create a virtual environment and activate it;**
     `python3 -m venv venv`
     `source venv/bin/activate`
 3.  **Install dependencies:**
