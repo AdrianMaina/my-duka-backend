@@ -88,11 +88,19 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# --- CORS Settings ---
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="").split(',')
-# For debugging on Render, you can temporarily set this to True
-CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
+# --- CORS Settings (More Robust Configuration) ---
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
 
+# Use a more flexible regex for your Vercel deployments
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.myduka\.online$",
+    r"^https://.*\.vercel\.app$",
+]
+
+# Explicitly trust your frontend's origin
+CORS_TRUSTED_ORIGINS = [
+    'https://www.myduka.online',
+]
 
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -102,7 +110,3 @@ EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
-
-# =======================================================================
-# ... (rest of the backend files are unchanged)
-# =======================================================================
