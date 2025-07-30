@@ -1,4 +1,3 @@
-
 # =======================================================================
 # FILE: myduka/myduka/settings.py (FIXED)
 # =======================================================================
@@ -100,7 +99,11 @@ CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:
 CORS_TRUSTED_ORIGINS = config('CORS_TRUSTED_ORIGINS', default="http://localhost:5173").split(',')
 
 
-# --- Email Settings (Using SendGrid Web API via django-sendgrid-v5) ---
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_API_KEY = config('SENDGRID_API_KEY')
+# --- Email Settings (Using Django's standard SMTP backend for SendGrid) ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='apikey')
+EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY') # Note: SendGrid uses the API key as the password
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
