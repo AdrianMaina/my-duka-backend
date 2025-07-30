@@ -14,6 +14,7 @@ class MpesaTransaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=50, choices=Status.choices, default=Status.PENDING)
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
+    checkout_request_id = models.CharField(max_length=100, blank=True, null=True) # NEW
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
