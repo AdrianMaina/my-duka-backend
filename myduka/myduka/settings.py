@@ -4,7 +4,7 @@
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
-import dj_database_url # ADDED THIS IMPORT
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
@@ -31,9 +31,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # For serving static files
+    'corsheaders.middleware.CorsMiddleware', # MOVED TO BE HIGHER
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -60,7 +60,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myduka.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
-        # Fallback to SQLite for local development
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
     )
 }
@@ -74,11 +73,9 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
 USE_TZ = True
-
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 REST_FRAMEWORK = {
@@ -90,13 +87,22 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="").split(',')
 
-# Email Settings (Using Django's standard SMTP backend for SendGrid)
+# --- CORS Settings ---
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="").split(',')
+# For debugging on Render, you can temporarily set this to True
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
+
+
+# Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = config('EMAIL_HOST_USER') # Should be 'apikey'
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') # Your SendGrid API Key
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='apikey')
+EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+
+# =======================================================================
+# ... (rest of the backend files are unchanged)
+# =======================================================================
