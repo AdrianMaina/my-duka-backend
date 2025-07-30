@@ -1,5 +1,5 @@
 # =======================================================================
-# FILE: myduka/myduka/settings.py (FIXED)
+# FILE: myduka/myduka/settings.py (EDITED FOR DEBUGGING)
 # =======================================================================
 from pathlib import Path
 from decouple import config
@@ -39,6 +39,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'users.middleware.RequestLogMiddleware', # ADDED FOR DEBUGGING
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,7 +96,6 @@ SIMPLE_JWT = {
 }
 
 # --- CORS Settings ---
-# This correctly reads the list of allowed domains from your environment variables.
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
 CORS_TRUSTED_ORIGINS = config('CORS_TRUSTED_ORIGINS', default="http://localhost:5173").split(',')
 
