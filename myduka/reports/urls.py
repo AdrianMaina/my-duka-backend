@@ -1,6 +1,6 @@
-=======================================================================
-FILE: myduka/reports/urls.py (FIXED)
-=======================================================================
+#=======================================================================
+#FILE: myduka/reports/urls.py (FIXED)
+#=======================================================================
 from django.urls import path
 from .views import (
     StoreOverviewAPIView, StaffListAPIView, SalesChartAPIView, 

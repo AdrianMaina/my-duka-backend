@@ -26,15 +26,22 @@ This is the DRF backend for MyDuka, providing a RESTful API for the frontend app
     `pip install -r requirements.txt`
 4.  **Create a `.env` file** in the `myduka/` directory (alongside `settings.py`). Copy the contents of the `.env` template and fill in your details.
 5.  **Clean Up (IMPORTANT for fixing errors):** If you have run commands before, delete the `db.sqlite3` file and the `migrations` folders inside the `users` and `stores` apps to start fresh.
-6.  **Create migration files for your apps (in order):**
-    `python manage.py makemigrations users`
-    `python manage.py makemigrations stores`
-7.  **Run database migrations to create the tables:**
-    `python manage.py migrate`
-8.  **Create a superuser** to access the Django Admin:
-    `python manage.py createsuperuser`
+
+
+6.  **Clean Up (IMPORTANT):** If you have run commands before, delete the `db.sqlite3` file and the `migrations` folders inside all apps (`users`, `stores`, `reports`, `payments`).
+7.  **Create and run migrations:**
+    ```bash
+    python manage.py makemigrations users stores reports payments
+    python manage.py migrate
+    ```
+8.  **Create a superuser:**
+    ```bash
+    python manage.py createsuperuser
+    ```
 9.  **Run the development server:**
-    `python manage.py runserver`
+    ```bash
+    python manage.py runserver
+    
 
 The API will be available at `http://127.0.0.1:8000/api/v1/`.
 
