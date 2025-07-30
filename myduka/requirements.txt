@@ -6,6 +6,5 @@ psycopg2-binary
 gunicorn
 python-decouple
 requests
-django-sendgrid-v5
 dj-database-url==0.5.0
 whitenoise
