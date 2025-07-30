@@ -6,5 +6,5 @@ psycopg2-binary
 gunicorn
 python-decouple
 requests
-dj-database-url
+dj-database-url==0.5.0
 whitenoise
