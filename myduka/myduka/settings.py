@@ -5,11 +5,18 @@ from pathlib import Path
 from decouple import config
 from datetime import timedelta
 import dj_database_url
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
+
+# More robust ALLOWED_HOSTS for production
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
+RENDER_EXTERNAL_HOSTNAME = config('RENDER_EXTERNAL_HOSTNAME', default=None)
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -98,9 +105,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 
 # Explicitly trust your frontend's origin
-CORS_TRUSTED_ORIGINS = [
-    'https://www.myduka.online',
-]
+CORS_TRUSTED_ORIGINS = config('CORS_TRUSTED_ORIGINS', default="http://localhost:5173").split(',')
+
 
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
