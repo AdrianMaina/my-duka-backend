@@ -66,8 +66,10 @@ class InviteUserView(APIView):
 
                 token = RefreshToken.for_user(user)
                 access_token = str(token.access_token)
-                invite_link = f"{frontend_url}/invite/{access_token}"
+                
+                # Define frontend_url in the correct scope
                 frontend_url = config('FRONTEND_URL', default='http://localhost:5173')
+                invite_link = f"{frontend_url}/invite/{access_token}"
 
                 send_invite_email(email, invite_link)
 
