@@ -1,5 +1,5 @@
 # =======================================================================
-# FILE: myduka/users/utils.py (EDITED FOR DEBUGGING)
+# FILE: myduka/users/utils.py (FIXED - Debugging removed)
 # =======================================================================
 from django.core.mail import send_mail
 from django.conf import settings
@@ -23,16 +23,6 @@ def send_invite_email(email, invite_link):
     """
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [email]
-
-    # --- TEMPORARY DEBUGGING LOGS ---
-    print("--- SENDING EMAIL DEBUG ---")
-    print(f"EMAIL_BACKEND: {settings.EMAIL_BACKEND}")
-    print(f"EMAIL_HOST: {settings.EMAIL_HOST}")
-    print(f"EMAIL_PORT: {settings.EMAIL_PORT}")
-    print(f"EMAIL_HOST_USER: {settings.EMAIL_HOST_USER}")
-    print(f"DEFAULT_FROM_EMAIL: {from_email}")
-    print("Attempting to send mail...")
-    # --- END DEBUGGING LOGS ---
 
     try:
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
