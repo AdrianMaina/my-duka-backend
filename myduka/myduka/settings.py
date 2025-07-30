@@ -116,3 +116,13 @@ EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+
+# myduka/myduka/settings.py
+
+# ... (at the very end of the file) ...
+
+print("--- SETTINGS DEBUG ---")
+print(f"DEBUG: {DEBUG}")
+print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+print(f"CORS_ALLOWED_ORIGINS: {CORS_ALLOWED_ORIGINS}")
+print("--- END SETTINGS DEBUG ---")
