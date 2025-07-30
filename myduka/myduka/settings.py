@@ -6,8 +6,6 @@ from decouple import config
 from datetime import timedelta
 import dj_database_url
 import os
-from corsheaders.defaults import default_headers
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
@@ -38,9 +36,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    "users.middleware.RequestLogMiddleware", 
+    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -98,14 +95,10 @@ SIMPLE_JWT = {
 }
 
 # --- CORS Settings ---
+# This correctly reads the list of allowed domains from your environment variables.
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_METHODS = True
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'content-type',
-    'X-CSRFToken',
-]
+CORS_TRUSTED_ORIGINS = config('CORS_TRUSTED_ORIGINS', default="http://localhost:5173").split(',')
+
 
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -115,17 +108,3 @@ EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
-
-# =======================================================================
-# ... (rest of the backend files are unchanged)
-# =======================================================================
-
-# myduka/myduka/settings.py
-
-# ... (at the very end of the file) ...
-
-print("--- SETTINGS DEBUG ---")
-print(f"DEBUG: {DEBUG}")
-print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
-print(f"CORS_ALLOWED_ORIGINS: {CORS_ALLOWED_ORIGINS}")
-print("--- END SETTINGS DEBUG ---")
