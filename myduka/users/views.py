@@ -10,6 +10,7 @@ from .serializers import UserSerializer, RegisterSerializer, InviteSerializer, C
 from .permissions import IsMerchant, IsAdmin
 from .utils import send_invite_email
 from stores.models import Store
+from decouple import config
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
