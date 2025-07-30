@@ -1,5 +1,6 @@
+
 # =======================================================================
-# FILE: myduka/myduka/settings.py (EDITED FOR DEBUGGING)
+# FILE: myduka/myduka/settings.py (FIXED)
 # =======================================================================
 from pathlib import Path
 from decouple import config
@@ -37,9 +38,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # MOVED TO BE HIGHER
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'users.middleware.RequestLogMiddleware', # ADDED FOR DEBUGGING
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,7 +95,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# --- CORS Settings ---
+# --- CORS Settings (More Robust Configuration) ---
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
 CORS_TRUSTED_ORIGINS = config('CORS_TRUSTED_ORIGINS', default="http://localhost:5173").split(',')
 
@@ -108,3 +108,7 @@ EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+
+# =======================================================================
+# ... (rest of the backend files are unchanged)
+# =======================================================================
