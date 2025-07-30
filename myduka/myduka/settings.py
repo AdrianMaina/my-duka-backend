@@ -11,7 +11,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# More robust ALLOWED_HOSTS for production
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
 RENDER_EXTERNAL_HOSTNAME = config('RENDER_EXTERNAL_HOSTNAME', default=None)
 if RENDER_EXTERNAL_HOSTNAME:
@@ -95,18 +94,8 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# --- CORS Settings (More Robust Configuration) ---
+# --- CORS Settings ---
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
-
-# Use a more flexible regex for your Vercel deployments
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.myduka\.online$",
-    r"^https://.*\.vercel\.app$",
-]
-
-# Explicitly trust your frontend's origin
-CORS_TRUSTED_ORIGINS = config('CORS_TRUSTED_ORIGINS', default="http://localhost:5173").split(',')
-
 
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -116,6 +105,10 @@ EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+
+# =======================================================================
+# ... (rest of the backend files are unchanged)
+# =======================================================================
 
 # myduka/myduka/settings.py
 
