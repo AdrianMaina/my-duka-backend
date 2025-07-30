@@ -6,6 +6,8 @@ from decouple import config
 from datetime import timedelta
 import dj_database_url
 import os
+from corsheaders.defaults import default_headers
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
@@ -96,6 +98,13 @@ SIMPLE_JWT = {
 
 # --- CORS Settings ---
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default="http://localhost:5173").split(',')
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_METHODS = True
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-type',
+    'X-CSRFToken',
+]
 
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
