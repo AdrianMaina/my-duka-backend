@@ -1,5 +1,5 @@
 # =======================================================================
-# FILE: myduka/users/utils.py (FIXED - Debugging removed)
+# FILE: myduka/users/utils.py (EDITED FOR DEBUGGING)
 # =======================================================================
 from django.core.mail import send_mail
 from django.conf import settings
@@ -23,6 +23,14 @@ def send_invite_email(email, invite_link):
     """
     from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [email]
+
+    # --- TEMPORARY DEBUGGING LOGS ---
+    print("--- SENDING EMAIL DEBUG ---")
+    print(f"EMAIL_BACKEND: {settings.EMAIL_BACKEND}")
+    print(f"SENDGRID_API_KEY IS SET: {bool(settings.SENDGRID_API_KEY)}")
+    print(f"DEFAULT_FROM_EMAIL: {from_email}")
+    print("Attempting to send mail...")
+    # --- END DEBUGGING LOGS ---
 
     try:
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
