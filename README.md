@@ -187,3 +187,6 @@ Push to the branch (git push origin feature/AmazingFeature)
 
 Open a Pull Request
 
+## Access my documentation
+https://my-duka-backend.onrender.com/api/v1/docs/
+
