@@ -51,35 +51,32 @@ class StaffListAPIView(generics.ListAPIView):
         """
         This view returns a list of all the staff members for the store
         specified in the URL, but only if the requesting user is the owner.
+        It now correctly excludes the owner from the staff list.
         """
         store_id = self.kwargs.get('store_id')
         requesting_user = self.request.user
 
-        # --- TEMPORARY DEBUGGING LOGS ---
         print("--- DEBUG: StaffListAPIView ---")
         print(f"Requesting user: {requesting_user.username} (ID: {requesting_user.id}, Role: {requesting_user.role})")
         print(f"Store ID from URL: {store_id}")
-        # --- END DEBUGGING LOGS ---
-
+        
         try:
-            # This query is the most important part. It checks two things:
-            # 1. Does the store exist?
-            # 2. Is the person asking for the list the actual owner of the store?
             store = Store.objects.get(pk=store_id, owner=requesting_user)
             
-            # --- MORE DEBUGGING ---
-            staff_queryset = store.staff.all()
+            # This is the corrected query. It fetches all staff assigned to the store
+            # and excludes the store owner themselves.
+            staff_queryset = store.staff.exclude(pk=requesting_user.pk)
+
             print(f"Found store: '{store.name}', owned by: {store.owner.username}")
             print(f"Staff found in queryset: {[s.username for s in staff_queryset]}")
             print("--- END DEBUG ---")
-            # --- END DEBUGGING ---
 
             return staff_queryset
         except Store.DoesNotExist:
-            # This will happen if the store ID is wrong OR if the user is not the owner.
             print("!!! Store not found or merchant does not own it. Returning empty list.")
             print("--- END DEBUG ---")
             return User.objects.none()
+
 
 class SalesChartAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
