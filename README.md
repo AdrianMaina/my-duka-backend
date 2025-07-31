@@ -43,78 +43,68 @@ run git clone in terminal
 
 ### Navigate to the project directory
 - navigate to the myduka direcory:
-   ```sh
 cd my-duka-backend/myduka
 
-
-
-- Create and activate a virtual environment
-   ```sh
+- Create and activate a virtual environment:
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-
-- Install dependencies
-  ```sh
+- Install dependencies:
 pip install -r requirements.txt
 
 
 ## 🗄️ Database Setup
 Important: Due to model dependencies, follow these steps in order:
 
-- Clean up existing database:
-   ```sh
+1. Clean up existing database:
 rm db.sqlite3
 rm -rf users/migrations stores/migrations reports/migrations payments/migrations
-- Run migrations in the correct order:
-  ```sh
+
+2. Run migrations in the correct order:
 python manage.py makemigrations stores
 python manage.py makemigrations users reports payments
 python manage.py migrate
 
-- Create a superuser:
-  ```sh
+3. Create a superuser:
 python manage.py createsuperuser
 
 ## 🔐 Environment Variables
 Create a .env file in the same directory as settings.py and add the following:
 
-env
-# --- Core Django Settings ---
+
+ --- Core Django Settings ---
 SECRET_KEY="your-unique-django-secret-key"
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
 
-# --- Database (optional for local development) ---
-# DATABASE_URL=sqlite:///db.sqlite3
+ --- Database (optional for local development) ---
+DATABASE_URL=sqlite:///db.sqlite3
 
-# --- CORS Settings ---
+--- CORS Settings ---
 CORS_ALLOWED_ORIGINS=http://localhost:5173
 CORS_TRUSTED_ORIGINS=http://localhost:5173
 
-# --- Email Configuration (SendGrid) ---
+ --- Email Configuration (SendGrid) ---
 SENDGRID_API_KEY="your-sendgrid-api-key"
 DEFAULT_FROM_EMAIL="your-verified-sender@example.com"
 
-# --- M-Pesa Sandbox Credentials ---
+### --- M-Pesa Sandbox Credentials ---
 MPESA_CONSUMER_KEY="your-daraja-consumer-key"
 MPESA_CONSUMER_SECRET="your-daraja-consumer-secret"
 MPESA_SHORTCODE=174379
 MPESA_PASSKEY="your-daraja-passkey"
 
-# --- Frontend URL ---
+### --- Frontend URL ---
 FRONTEND_URL=http://localhost:5173
 
 ## 🚀 Running Locally
 - Start the development server:
-  ```sh
 python manage.py runserver
 
 - The API will be available at http://127.0.0.1:8000/
 
 ## 🧪 Running Tests
 - Execute the automated test suite:
-  ```sh
 python manage.py test
 
 
@@ -141,18 +131,16 @@ Runtime: Python 3
 Root Directory: myduka (folder containing manage.py)
 
 - Build Command:
-  ```sh
 pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python manage.py createsuperuser_if_none_exists
 
 - Start Command:
-  ```sh
 gunicorn myduka.wsgi -c gunicorn.conf.py
 
 
 3. Environment Variables
 Set the following environment variables in your Render Web Service:
 
-env
+
 DATABASE_URL=your-render-postgresql-internal-url
 ALLOWED_HOSTS=myduka-backend.onrender.com
 CORS_ALLOWED_ORIGINS=https://www.myduka.online
@@ -167,13 +155,12 @@ DJANGO_SUPERUSER_PASSWORD=your-secure-password
 To test M-Pesa callbacks locally, you need to expose your local server:
 
 - Download and run ngrok: 
-  ```sh
 ./ngrok http 8000
 
-- Get the public URL
+- Get the public URL:
 ngrok will provide a public https://... URL
 
-- Update callback URL
+- Update callback URL:
 In myduka/payments/views.py, temporarily replace the callback_url with your ngrok URL
 
 ## 🤝 Contributing
