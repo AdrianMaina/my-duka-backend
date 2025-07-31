@@ -9,3 +9,4 @@ requests
 django-sendgrid-v5==1.3.0 
 dj-database-url==0.5.0
 whitenoise
+drf-spectacular
