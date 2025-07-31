@@ -31,6 +31,11 @@ def send_invite_email(email, invite_link):
     print(f"SENDGRID_API_KEY IS SET: {bool(settings.SENDGRID_API_KEY)}")
     print(f"DEFAULT_FROM_EMAIL: {from_email}")
     print("Attempting to send mail...")
+    print(email, type(email))
+    print(f"recipient_list: {recipient_list}, type: {type(recipient_list)}")
+
+# Should output something like: 'adrian@example.com' <class 'str'>
+
     # --- END DEBUGGING LOGS ---
 
     try:
