@@ -26,10 +26,9 @@ class StaffSerializer(serializers.ModelSerializer):
         return "verified" if obj.is_active else "pending"
 
     def get_store_name(self, obj):
-        """Safely returns the name of the user's store, or None if they have no store."""
-        if obj.store:
-            return obj.store.name
-        return None
+        return getattr(obj.store, 'name', None)
+
+        
 
 class Meta:
     model = User
