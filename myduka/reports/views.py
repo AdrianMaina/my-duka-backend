@@ -77,7 +77,6 @@ class StaffListAPIView(generics.ListAPIView):
             print("--- END DEBUG ---")
             return User.objects.none()
 
-
 class SalesChartAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
