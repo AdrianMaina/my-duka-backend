@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from .models import Store, InventoryItem, Supplier, StockReceive, Spoilage, SupplyRequest, Sale
 from .serializers import StoreSerializer, InventoryItemSerializer, SupplierSerializer, StockReceiveSerializer, SpoilageSerializer, SupplyRequestSerializer, SaleSerializer, ApprovedSupplyRequestSerializer, ConfirmDeliverySerializer
 from users.permissions import IsMerchant, IsAdmin, IsClerk
+from reports.models import DailySale
+from django.utils import timezone
 
 class StoreViewSet(viewsets.ModelViewSet):
     serializer_class = StoreSerializer
@@ -99,10 +101,25 @@ class SaleViewSet(viewsets.ModelViewSet):
         if item.quantity < quantity_sold:
             raise serializers.ValidationError("Not enough stock to complete the sale.")
 
+        # 1. Deduct from inventory
         item.quantity -= quantity_sold
         item.save()
 
-        serializer.save(sold_by=self.request.user)
+        # 2. Save the individual sale record
+        sale = serializer.save(sold_by=self.request.user)
+
+        # 3. Update the daily sales summary for reporting
+        sale_date = sale.sold_at.date()
+        sale_value = quantity_sold * item.selling_price
+
+        daily_sale, created = DailySale.objects.get_or_create(
+            store=item.store,
+            date=sale_date,
+            defaults={'total_sales': 0}
+        )
+        daily_sale.total_sales += sale_value
+        daily_sale.save()
+
 
 class ApprovedSupplyRequestsView(generics.ListAPIView):
     serializer_class = ApprovedSupplyRequestSerializer
