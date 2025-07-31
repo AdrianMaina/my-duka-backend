@@ -44,6 +44,17 @@ def send_invite_email(email, invite_link):
     except Exception as e:
         print(f"Error sending email to {email}: {e}")
 
+
+def test_email():
+    print("--- TESTING EMAIL ---")
+    send_mail(
+        subject="Test",
+        message="This is a test",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=["test@example.com"],
+        fail_silently=False
+    )
+
 # =======================================================================
 # ... (rest of the backend files are unchanged)
 # =======================================================================
