@@ -55,10 +55,6 @@ class StaffListAPIView(generics.ListAPIView):
         """
         store_id = self.kwargs.get('store_id')
         requesting_user = self.request.user
-
-        print("--- DEBUG: StaffListAPIView ---")
-        print(f"Requesting user: {requesting_user.username} (ID: {requesting_user.id}, Role: {requesting_user.role})")
-        print(f"Store ID from URL: {store_id}")
         
         try:
             store = Store.objects.get(pk=store_id, owner=requesting_user)
@@ -67,14 +63,8 @@ class StaffListAPIView(generics.ListAPIView):
             # and excludes the store owner themselves.
             staff_queryset = store.staff.exclude(pk=requesting_user.pk)
 
-            print(f"Found store: '{store.name}', owned by: {store.owner.username}")
-            print(f"Staff found in queryset: {[s.username for s in staff_queryset]}")
-            print("--- END DEBUG ---")
-
             return staff_queryset
         except Store.DoesNotExist:
-            print("!!! Store not found or merchant does not own it. Returning empty list.")
-            print("--- END DEBUG ---")
             return User.objects.none()
 
 class SalesChartAPIView(APIView):
