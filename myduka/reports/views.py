@@ -11,6 +11,7 @@ from stores.models import Store, InventoryItem, StockReceive, Spoilage, SupplyRe
 from users.models import User
 from .models import DailySale
 from .serializers import StaffSerializer
+import traceback
 
 class StoreOverviewAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -48,23 +49,23 @@ class StaffListAPIView(generics.ListAPIView):
     serializer_class = StaffSerializer
 
     def get_queryset(self):
-        """
-        This view returns a list of all the staff members for the store
-        specified in the URL, but only if the requesting user is the owner.
-        It now correctly excludes the owner from the staff list.
-        """
         store_id = self.kwargs.get('store_id')
         requesting_user = self.request.user
-        
+
+
         try:
-            store = Store.objects.get(pk=store_id, owner=requesting_user)
             
-            # This is the corrected query. It fetches all staff assigned to the store
-            # and excludes the store owner themselves.
+            print(f"Getting store with ID: {store_id}, for user {requesting_user.username}")
+            store = Store.objects.get(pk=store_id, owner=requesting_user)
+
             staff_queryset = store.staff.exclude(pk=requesting_user.pk)
 
+            print(f"Staff members: {[s.username for s in staff_queryset]}")
             return staff_queryset
-        except Store.DoesNotExist:
+
+         except Exception as e:
+            print("!!! ERROR in StaffListAPIView !!!")
+            print(traceback.format_exc())  # Full traceback
             return User.objects.none()
 
 class SalesChartAPIView(APIView):
