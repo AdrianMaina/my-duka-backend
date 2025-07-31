@@ -33,29 +33,3 @@ class StaffSerializer(serializers.ModelSerializer):
         return None
 
 
-class Meta:
-    model = User
-    fields = ['id', 'name', 'email', 'role', 'status']
-
-def get_name(self, obj):
-    return obj.get_full_name() or obj.username
-
-def get_status(self, obj):
-    # This logic can be expanded later to check invite expiry
-    return "verified" if obj.is_active else "pending"
-
-class StaffSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-    status = serializers.SerializerMethodField()
-    store_name = serializers.CharField(source='store.name', read_only=True, default=None)
-
-    class Meta:
-        model = User
-        fields = ['id', 'name', 'email', 'role', 'status', 'is_active']
-
-    def get_name(self, obj):
-        return obj.get_full_name() or obj.username
-
-    def get_status(self, obj):
-        # This logic can be expanded later to check invite expiry
-        return "verified" if obj.is_active else "pending"
