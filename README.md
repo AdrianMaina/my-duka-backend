@@ -1,72 +1,189 @@
-# FILE: README.md 
+# MyDuka Backend
 
-# MyDuka - Backend (Django REST Framework)
+A modern, role-based management tool for small retail businesses. This is a robust REST API built with Django and Django REST Framework, designed to be secure, scalable, and easy to maintain.
 
-This is the DRF backend for MyDuka, providing a RESTful API for the frontend application.
+## 🚀 Features
+- **RESTful API** - Clean and intuitive API design
+- **Role-based Authentication** - Secure JWT token-based authentication
+- **M-Pesa Integration** - Seamless mobile money payments
+- **Email Integration** - Automated notifications via SendGrid
+- **Auto-generated Documentation** - Interactive API docs with Swagger UI
+- **Production Ready** - Configured for deployment on Render
 
-## ✨ Features
+## 🛠️ Built With
+- Django - Python web framework
+- Django REST Framework - Powerful toolkit for building APIs
+- Django REST Framework Simple JWT - Token-based authentication
+- PostgreSQL - Production database
+- Gunicorn - Production WSGI server
+- drf-spectacular - Automatic API documentation
 
-* Secure, versioned REST API.
-* JWT Authentication with SimpleJWT.
-* Role-based access control (Merchants, Admins, Clerks).
-* API endpoints for managing stores and inventory.
-* Tokenized invitation system for Admins and Clerks.
-* Placeholder for M-Pesa integration.
+## 📋 Table of Contents
+1. [Prerequisites](#-prerequisites)
+2. [Installation](#-installation)
+3. [Database Setup](#-database-setup)
+4. [Environment Variables](#-environment-variables)
+5. [Running Locally](#-running-locally)
+6. [Running Tests](#-running-tests)
+7. [API Documentation](#-api-documentation)
+8. [Deployment](#-deployment)
+9. [M-Pesa Testing](#-mpesa-integration-testing)
+10. [Contributing](#-contributing)
 
-## 🚀 Getting Started
+## 📋 Prerequisites
+Before you begin, ensure you have the following installed:
+- Python 3.8+
+- pip (Python package installer)
+- venv (Virtual environment)
 
-### 1. Setup
+## 🔧 Installation
 
-1.  **Clone the repository:**
-    `git clone <repository-url> && cd myduka-backend`
-2.  **Create a virtual environment and activate it;**
-    `python3 -m venv venv`
-    `source venv/bin/activate`
-3.  **Install dependencies:**
-    `pip install -r requirements.txt`
-4.  **Create a `.env` file** in the `myduka/` directory (alongside `settings.py`). Copy the contents of the `.env` template and fill in your details.
-5.  **Clean Up (IMPORTANT for fixing errors):** If you have run commands before, delete the `db.sqlite3` file and the `migrations` folders inside the `users` and `stores` apps to start fresh.
+### Clone the repository
+run git clone in terminal
+
+### Navigate to the project directory
+- navigate to the myduka direcory:
+   ```sh
+cd my-duka-backend/myduka
 
 
-6.  **Clean Up (IMPORTANT):** If you have run commands before, delete the `db.sqlite3` file and the `migrations` folders inside all apps (`users`, `stores`, `reports`, `payments`).
-7.  **Create and run migrations:**
-    ```bash
-    python manage.py makemigrations users stores reports payments
-    python manage.py migrate
-    ```
-8.  **Create a superuser:**
-    ```bash
-    python manage.py createsuperuser
-    ```
-9.  **Run the development server:**
-    ```bash
-    python manage.py runserver
-    
 
-The API will be available at `http://127.0.0.1:8000/api/v1/`.
+- Create and activate a virtual environment
+   ```sh
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-## 🔧 M-Pesa Development Setup
 
-The M-Pesa API needs to send a confirmation (callback) to your server. Since your server is running locally, you need to expose it to the internet.
+- Install dependencies
+  ```sh
+pip install -r requirements.txt
 
-1.  **Download ngrok:** [https://ngrok.com/download](https://ngrok.com/download)
-2.  **Run ngrok** to expose your Django port (usually 8000):
-    `./ngrok http 8000`
-3.  **ngrok will give you a public URL**yrl (e.g., `https://random-string.ngrok.io`). This is your public base URL.
-4.  **On the Daraja Portal:** When registering your callback URLs, use the ngrok URL. For example:
-    * Confirmation URL: `https://random-string.ngrok.io/api/v1/mpesa/confirm/`
-    * Validation URL: `https://random-string.ngrok.io/api/v1/mpesa/validate/`
 
-## ✉️ Email Invite Setup
+## 🗄️ Database Setup
+Important: Due to model dependencies, follow these steps in order:
 
-1.  **Sign up for SendGrid** or a similar email service.
-2.  Get your API keys.
-3.  Add `SENDGRID_API_KEY` and `DEFAULT_FROM_EMAIL` to your `.env` file.
-4.  In `myduka/settings.py`, change the `EMAIL_BACKEND` to use the SendGrid backend (see their documentation for specifics).
-5.  Create a `users/utils.py` file and implement the `send_invite_email` function to send the actual email.
+- Clean up existing database:
+   ```sh
+rm db.sqlite3
+rm -rf users/migrations stores/migrations reports/migrations payments/migrations
+- Run migrations in the correct order:
+  ```sh
+python manage.py makemigrations stores
+python manage.py makemigrations users reports payments
+python manage.py migrate
 
-By Ian Githae.
-By Benard Kimari.
-By Adrian Maina.
-By Emmanuel Ontweka.
-By Ignatius Kamau
+- Create a superuser:
+  ```sh
+python manage.py createsuperuser
+
+## 🔐 Environment Variables
+Create a .env file in the same directory as settings.py and add the following:
+
+env
+# --- Core Django Settings ---
+SECRET_KEY="your-unique-django-secret-key"
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# --- Database (optional for local development) ---
+# DATABASE_URL=sqlite:///db.sqlite3
+
+# --- CORS Settings ---
+CORS_ALLOWED_ORIGINS=http://localhost:5173
+CORS_TRUSTED_ORIGINS=http://localhost:5173
+
+# --- Email Configuration (SendGrid) ---
+SENDGRID_API_KEY="your-sendgrid-api-key"
+DEFAULT_FROM_EMAIL="your-verified-sender@example.com"
+
+# --- M-Pesa Sandbox Credentials ---
+MPESA_CONSUMER_KEY="your-daraja-consumer-key"
+MPESA_CONSUMER_SECRET="your-daraja-consumer-secret"
+MPESA_SHORTCODE=174379
+MPESA_PASSKEY="your-daraja-passkey"
+
+# --- Frontend URL ---
+FRONTEND_URL=http://localhost:5173
+
+## 🚀 Running Locally
+- Start the development server:
+  ```sh
+python manage.py runserver
+
+- The API will be available at http://127.0.0.1:8000/
+
+## 🧪 Running Tests
+- Execute the automated test suite:
+  ```sh
+python manage.py test
+
+
+## 📚 API Documentation
+This project uses drf-spectacular for automatic API documentation generation.
+
+While your local server is running, access the documentation at:
+
+Swagger UI: http://127.0.0.1:8000/api/v1/docs/
+
+Redoc: http://127.0.0.1:8000/api/v1/redoc/
+
+## 🌐 Deployment to Render
+1. Create PostgreSQL Database
+Create a new PostgreSQL database on Render
+
+Copy the "Internal Database URL"
+
+2. Create Web Service
+Configure your Render Web Service with:
+
+Runtime: Python 3
+
+Root Directory: myduka (folder containing manage.py)
+
+- Build Command:
+  ```sh
+pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python manage.py createsuperuser_if_none_exists
+
+- Start Command:
+  ```sh
+gunicorn myduka.wsgi -c gunicorn.conf.py
+
+
+3. Environment Variables
+Set the following environment variables in your Render Web Service:
+
+env
+DATABASE_URL=your-render-postgresql-internal-url
+ALLOWED_HOSTS=myduka-backend.onrender.com
+CORS_ALLOWED_ORIGINS=https://www.myduka.online
+FRONTEND_URL=https://www.myduka.online
+# ... plus all other variables from your .env file
+
+# For automatic superuser creation on first deploy
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@example.com
+DJANGO_SUPERUSER_PASSWORD=your-secure-password
+💳 M-Pesa Integration Testing
+To test M-Pesa callbacks locally, you need to expose your local server:
+
+- Download and run ngrok: 
+  ```sh
+./ngrok http 8000
+
+- Get the public URL
+ngrok will provide a public https://... URL
+
+- Update callback URL
+In myduka/payments/views.py, temporarily replace the callback_url with your ngrok URL
+
+## 🤝 Contributing
+Fork the project
+
+Create your feature branch (git checkout -b feature/AmazingFeature)
+
+Commit your changes (git commit -m 'Add some AmazingFeature')
+
+Push to the branch (git push origin feature/AmazingFeature)
+
+Open a Pull Request
+
