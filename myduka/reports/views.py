@@ -67,6 +67,14 @@ class StaffListAPIView(generics.ListAPIView):
             print("!!! ERROR in StaffListAPIView !!!")
             print(traceback.format_exc())  # Full traceback
             return User.objects.none()
+
+    def list(self, request, *args, **kwargs):
+        try:
+            return super().list(request, *args, **kwargs)
+        except Exception as e:
+            print("!!! ERROR DURING SERIALIZATION !!!")
+            print(traceback.format_exc())
+            return Response({"error": "Serialization error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
 class SalesChartAPIView(APIView):
