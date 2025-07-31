@@ -85,7 +85,7 @@ class PaySupplierView(APIView):
             if transaction.status == MpesaTransaction.Status.PENDING:
                  return Response({"error": "A payment for this delivery is already pending. Please check M-Pesa."}, status=status.HTTP_400_BAD_REQUEST)
         
-        callback_url = "https://your-ngrok-url.ngrok.io/api/v1/payments/mpesa-callback/"
+        callback_url = "https://2e0e9bc3d0c2.ngrok-free.app/api/v1/payments/mpesa-callback/"
         
         try:
             mpesa_response = lipa_na_mpesa_online(
