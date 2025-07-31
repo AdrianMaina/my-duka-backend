@@ -40,33 +40,25 @@ class StoreOverviewAPIView(APIView):
         }
         return Response(data, status=status.HTTP_200_OK)
 
-class StaffListAPIView(generics.ListAPIView):
-    """
-    API endpoint that returns a list of all staff members (Admins and Clerks)
-    for a specific store owned by the requesting Merchant.
-    """
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = StaffSerializer
 
-    def get_queryset(self):
-        store_id = self.kwargs.get('store_id')
-        requesting_user = self.request.user
+def get_queryset(self):
+    store_id = self.kwargs.get('store_id')
+    requesting_user = self.request.user
 
+    try:
+        print(f"Getting store with ID: {store_id}, for user {requesting_user.username}")
+        store = Store.objects.get(pk=store_id, owner=requesting_user)
 
-        try:
-            
-            print(f"Getting store with ID: {store_id}, for user {requesting_user.username}")
-            store = Store.objects.get(pk=store_id, owner=requesting_user)
+        staff_queryset = store.staff.exclude(pk=requesting_user.pk)
 
-            staff_queryset = store.staff.exclude(pk=requesting_user.pk)
+        print(f"Staff members: {[s.username for s in staff_queryset]}")
+        return staff_queryset
 
-            print(f"Staff members: {[s.username for s in staff_queryset]}")
-            return staff_queryset
+    except Exception as e:
+        print("!!! ERROR in StaffListAPIView !!!")
+        print(traceback.format_exc())  # Full traceback
+        return User.objects.none()
 
-         except Exception as e:
-            print("!!! ERROR in StaffListAPIView !!!")
-            print(traceback.format_exc())  # Full traceback
-            return User.objects.none()
 
 class SalesChartAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -154,3 +146,4 @@ class ClerkOverviewAPIView(APIView):
             "pendingRequests": pending_requests,
         }
         return Response(data, status=status.HTTP_200_OK)
+
