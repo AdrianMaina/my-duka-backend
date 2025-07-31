@@ -60,59 +60,53 @@ class PaySupplierView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        print("=== DEBUG: Incoming PaySupplier Request ===")
-        print("Raw Request Data:", request.data)
-
         stock_receive_id = request.data.get('stock_receive_id')
         phone_number = request.data.get('phone_number')
         amount = request.data.get('amount')
 
         if not all([stock_receive_id, phone_number, amount]):
-            print("ERROR: Missing fields",
-                  {"stock_receive_id": stock_receive_id, "phone_number": phone_number, "amount": amount})
             return Response({"error": "Missing required fields."}, status=status.HTTP_400_BAD_REQUEST)
 
         formatted_phone = format_phone_number(phone_number)
-        print("Formatted Phone:", formatted_phone)
-
         if not formatted_phone:
-            print("ERROR: Invalid phone format for:", phone_number)
             return Response({
-                "error": f"Invalid phone number format: '{phone_number}'. Please ensure it's like 07... or 254..."
+                "error": f"Invalid phone number format: '{phone_number}'. Please ensure the supplier's number is correct and in a valid format (e.g., 07... or 254...)."
             }, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             stock_receive = StockReceive.objects.get(pk=stock_receive_id)
-            print("Found StockReceive:", stock_receive.id)
         except StockReceive.DoesNotExist:
-            print("ERROR: StockReceive not found:", stock_receive_id)
             return Response({"error": "Delivery record not found."}, status=status.HTTP_404_NOT_FOUND)
 
         if hasattr(stock_receive, 'mpesa_transaction'):
             transaction = stock_receive.mpesa_transaction
-            print("Existing Transaction Status:", transaction.status)
             if transaction.status == MpesaTransaction.Status.SUCCESS:
-                return Response({"error": "Already paid."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "This delivery has already been successfully paid for."}, status=status.HTTP_400_BAD_REQUEST)
             if transaction.status == MpesaTransaction.Status.PENDING:
-                return Response({"error": "Payment already pending."}, status=status.HTTP_400_BAD_REQUEST)
+                 return Response({"error": "A payment for this delivery is already pending. Please check M-Pesa."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        callback_url = "https://your-ngrok-url.ngrok.io/api/v1/payments/mpesa-callback/"
+        
+        try:
+            mpesa_response = lipa_na_mpesa_online(
+                phone_number=formatted_phone,
+                amount=int(float(amount)),
+                account_reference=f"STORE{stock_receive.inventory_item.store.id}",
+                transaction_desc=f"Payment for {stock_receive.inventory_item.name}",
+                callback_url=callback_url
+            )
+        except Exception as e:
+            print("--- MPESA API ERROR ---")
+            print(f"An exception occurred: {e}")
+            print("--- END MPESA API ERROR ---")
+            return Response({"error": "An error occurred while contacting the M-Pesa API."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        callback_url = "https://b78a2588706c.ngrok-free.app/api/v1/payments/mpesa-callback/"
-        print("Callback URL:", callback_url)
-
-        transaction_desc = (f"Pay {stock_receive.inventory_item.name}")[:13]
-
-        mpesa_response = lipa_na_mpesa_online(
-            phone_number=formatted_phone,
-            amount=int(float(amount)),
-            account_reference=f"STORE{stock_receive.inventory_item.store.id}",
-            transaction_desc=transaction_desc,
-            callback_url=callback_url
-        )
-        print("M-Pesa API Response:", mpesa_response)
 
         checkout_request_id = mpesa_response.get('CheckoutRequestID')
         if not checkout_request_id:
-            print("ERROR: No CheckoutRequestID in response.")
+            print("--- MPESA API ERROR ---")
+            print(f"Safaricom API returned an error: {mpesa_response}")
+            print("--- END MPESA API ERROR ---")
             return Response({"error": "Failed to initiate M-Pesa STK push. Check Daraja credentials."}, status=status.HTTP_400_BAD_REQUEST)
 
         MpesaTransaction.objects.create(
@@ -120,9 +114,9 @@ class PaySupplierView(APIView):
             amount=amount,
             checkout_request_id=checkout_request_id
         )
-        print("Transaction Created Successfully")
 
         return Response(mpesa_response, status=status.HTTP_200_OK)
+
 
 class MpesaCallbackView(APIView):
     permission_classes = [permissions.AllowAny]
