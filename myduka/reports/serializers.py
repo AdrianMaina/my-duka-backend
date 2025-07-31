@@ -22,6 +22,7 @@ def get_status(self, obj):
 class StaffSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
+    store_name = serializers.CharField(source='store.name', read_only=True, default=None)
 
     class Meta:
         model = User
