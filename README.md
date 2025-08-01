@@ -163,7 +163,7 @@ ngrok will provide a public https://... URL
 - Update callback URL:
 In myduka/payments/views.py, temporarily replace the callback_url with your ngrok URL
 
-## 🤝 Contributing
+### 🤝 Contributing
 Fork the project
 
 Create your feature branch (git checkout -b feature/AmazingFeature)
