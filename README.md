@@ -166,7 +166,7 @@ DJANGO_SUPERUSER_PASSWORD=your-secure-password
 💳 M-Pesa Integration Testing
 To test M-Pesa callbacks locally, you need to expose your local server:
 
-- Download and run ngrok;
+- Download and run ngrok:
 ./ngrok http 8000
 
 - Get the public URL:
