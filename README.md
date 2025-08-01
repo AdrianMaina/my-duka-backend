@@ -13,7 +13,7 @@ A modern, role-based management tool for small retail businesses. This is a robu
 ## 🛠️ Built With
 - Django - Python web framework
 - Django REST Framework - Powerful toolkit for building APIs
-- Django REST Framework Simple JWT - Token-based authentication
+- Django REST Framework Simple JWT -Token-based authentication
 - PostgreSQL - Production database
 - Gunicorn - Production WSGI server
 - drf-spectacular - Automatic API documentation
