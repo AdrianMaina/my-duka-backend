@@ -158,7 +158,7 @@ To test M-Pesa callbacks locally, you need to expose your local server:
 ./ngrok http 8000
 
 - Get the public URL:
-ngrok will provide a public https://... URL
+ngrok will provide a public https://... URL ..
 
 - Update callback URL:
 In myduka/payments/views.py, temporarily replace the callback_url with your ngrok URL
