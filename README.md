@@ -152,7 +152,6 @@ pip install -r requirements.txt && python manage.py collectstatic --no-input && 
 - Start Command:
 gunicorn myduka.wsgi -c gunicorn.conf.py
 
-
 3. Environment Variables
 Set the following environment variables in your Render Web Service:
 
