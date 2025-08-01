@@ -12,6 +12,8 @@ A modern, role-based management tool for small retail businesses. This is a robu
 - **Auto-generated Documentation** - Interactive API docs with Swagger UI
 - **Production Ready** - Configured for deployment on Render
 
+  
+
 ## 🛠️ Built With
 - Django - Python web framework
 - Django REST Framework - Powerful toolkit for building APIs
