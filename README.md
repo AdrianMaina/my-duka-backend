@@ -178,5 +178,5 @@ Open a Pull Request
 https://my-duka-backend.onrender.com/api/v1/docs/
 
 Made by the following:
-1. 
+1. Adrian Maina
 
