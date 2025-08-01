@@ -114,6 +114,7 @@ python manage.py test
 ## 📚 API Documentation
 This project uses drf-spectacular for automatic API documentation generation.
 
+
 While your local server is running, access the documentation at:
 
 Swagger UI: http://127.0.0.1:8000/api/v1/docs/
