@@ -142,7 +142,7 @@ Runtime: Python 3
 
 Root Directory: myduka (folder containing manage.py)
 
-- Build Command;
+- Build Command:
 pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python manage.py createsuperuser_if_none_exists
 
 - Start Command:
