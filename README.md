@@ -180,5 +180,6 @@ https://my-duka-backend.onrender.com/api/v1/docs/
 Made by the following:
 1. Adrian Maina
 2. Emmanuel Ontweka
-3. Benard
+3. Benard Kimari
+4. 
 
