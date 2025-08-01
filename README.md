@@ -58,7 +58,7 @@ Important: Due to model dependencies, follow these steps in order:
 
 1. Clean up existing database:
 rm db.sqlite3
-rm -rf users/migrations stores/migrations reports/migrations payments/migrations
+rm -rf users/migrations stores/migrations reports/migrations payments/migrations.
 
 2. Run migrations in the correct order:
 python manage.py makemigrations stores
