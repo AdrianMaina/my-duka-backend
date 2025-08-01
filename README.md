@@ -177,5 +177,5 @@ Open a Pull Request
 ## Access my documentation
 https://my-duka-backend.onrender.com/api/v1/docs/
 
-Made by the following
+Made by the following:
 
