@@ -115,11 +115,13 @@ python manage.py runserver
 - The API will be available at http://127.0.0.1:8000/
 
 ## 🧪 Running Tests
+
 - Execute the automated test suite:
 python manage.py test
 
 
 ## 📚 API Documentation
+
 This project uses drf-spectacular for automatic API documentation generation.
 
 
@@ -130,6 +132,7 @@ Swagger UI: http://127.0.0.1:8000/api/v1/docs/
 Redoc: http://127.0.0.1:8000/api/v1/redoc/
 
 ## 🌐 Deployment to Render
+
 1. Create PostgreSQL Database
 Create a new PostgreSQL database on Render
 
