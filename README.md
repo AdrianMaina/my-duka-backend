@@ -144,7 +144,7 @@ Set the following environment variables in your Render Web Service:
 DATABASE_URL=your-render-postgresql-internal-url
 ALLOWED_HOSTS=myduka-backend.onrender.com
 CORS_ALLOWED_ORIGINS=https://www.myduka.online
-FRONTEND_URL=https://www.myduka.online
+FRONTEND_URL=https://www.myduka.online.
 # ... plus all other variables from your .env file
 
 # For automatic superuser creation on first deploy
