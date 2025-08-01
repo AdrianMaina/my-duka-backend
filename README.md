@@ -3,6 +3,7 @@
 
 A modern, role-based management tool for small retail businesses. This is a robust REST API built with Django and Django REST Framework, designed to be secure, scalable, and easy to maintain.
 
+
 ## 🚀 Features
 - **RESTful API** - Clean and intuitive API design
 - **Role-based Authentication** - Secure JWT token-based authentication
