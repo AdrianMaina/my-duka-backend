@@ -44,7 +44,7 @@ A modern, role-based management tool for small retail businesses. This is a robu
 Before you begin, ensure you have the following installed:
 - Python 3.8+
 - pip (Python package installer)
-- venv (Virtual environment)
+- venv (Virtual Environment)
 
 ## 🔧 Installation
 
