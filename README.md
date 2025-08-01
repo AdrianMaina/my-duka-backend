@@ -22,6 +22,9 @@ A modern, role-based management tool for small retail businesses. This is a robu
 - Gunicorn - Production WSGI server
 - drf-spectacular - Automatic API documentation
 
+
+
+
 ## 📋 Table of Contents
 1. [Prerequisites](#-prerequisites)
 2. [Installation](#-installation)
