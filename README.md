@@ -37,6 +37,9 @@ A modern, role-based management tool for small retail businesses. This is a robu
 9. [M-Pesa Testing](#-mpesa-integration-testing)
 10. [Contributing](#-contributing)
 
+
+
+
 ## 📋 Prerequisites
 Before you begin, ensure you have the following installed:
 - Python 3.8+
